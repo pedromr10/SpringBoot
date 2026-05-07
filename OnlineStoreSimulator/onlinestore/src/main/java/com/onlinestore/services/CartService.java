@@ -3,6 +3,7 @@ package com.onlinestore.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.onlinestore.dtos.AddProductToCartRequestDto;
 import com.onlinestore.dtos.CartResponseDto;
 import com.onlinestore.entities.Cart;
 import com.onlinestore.entities.CartItem;
@@ -38,37 +39,37 @@ public class CartService {
 	
 	
 	//insert product to cart:
-	public CartResponseDto addProductToCart(Long cartId, Long productId, Integer quantity){
+	public CartResponseDto addProductToCart(Long cartId, AddProductToCartRequestDto request){
 		//verifies if quantity is greater than zero:
-		if (quantity <= 0) {
+		if (request.getQuantity()<= 0) {
 		    throw new RuntimeException("Quantity must be greater than zero");
 		}
 		Cart cart = cartRepo.findById(cartId).orElseThrow(()-> new CartNotFoundException("Cart not found"));
-		Product product = productRepo.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+		Product product = productRepo.findById(request.getProductId()).orElseThrow(() -> new ProductNotFoundException("Product not found"));
 		//verify if product already exists in cart:
 		CartItem existingItem = null;
 		for(CartItem item: cart.getCartItems()) {
-			if(item.getProduct().getId().equals(productId)) {
+			if(item.getProduct().getId().equals(request.getProductId())) {
 				existingItem = item;
 				break;
 			}
 		}
 		if(existingItem != null) {
 			//verifies if it has stock:
-			if(product.getStock() < quantity + existingItem.getQuantity()) {
+			if(product.getStock() < request.getQuantity() + existingItem.getQuantity()) {
 				throw new RuntimeException("Insufficient stock");
 			}
-			existingItem.setQuantity(quantity + existingItem.getQuantity());
+			existingItem.setQuantity(request.getQuantity() + existingItem.getQuantity());
 			
 		}
 		else {
 			//verifies if it has stock:
-			if(product.getStock() < quantity) {
+			if(product.getStock() < request.getQuantity()) {
 				throw new RuntimeException("Insufficient stock");
 			}
 	        CartItem newItem = new CartItem();
 	        newItem.setProduct(product);
-	        newItem.setQuantity(quantity);
+	        newItem.setQuantity(request.getQuantity());
 	        newItem.setCart(cart);
 
 	        cart.getCartItems().add(newItem);
@@ -79,7 +80,23 @@ public class CartService {
 		return cartMapper.toCartResponse(savedCart);
 	}
 	
-
+	//delete item from cart:
+	public CartResponseDto deleteItem(Long cartId, Long cartItemId) {
+		Cart cart = cartRepo.findById(cartId).orElseThrow(()-> new CartNotFoundException("Cart not found"));
+		CartItem cartItem = null;
+		for(CartItem item : cart.getCartItems()) {
+			if(item.getId().equals(cartItemId)) {
+				cartItem = item;
+				break;
+			}
+		}
+		if(cartItem == null) {
+			throw new RuntimeException("Cart item not found");
+		}
+		cart.getCartItems().remove(cartItem);
+		Cart savedCart = cartRepo.save(cart);
+		return cartMapper.toCartResponse(savedCart);
+	}
 	
 }
 
