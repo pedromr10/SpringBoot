@@ -23,6 +23,20 @@ public class CartService {
 	@Autowired
 	private CartMapper cartMapper;
 	
+	//createCart:
+	public CartResponseDto createCart() {
+		Cart cart = new Cart();
+		Cart savedCart = cartRepo.save(cart);
+		return cartMapper.toCartResponse(savedCart);
+	}
+	
+	//find cart by id:
+	public CartResponseDto findCartById(Long cartId) {
+		Cart cart = cartRepo.findById(cartId).orElseThrow(()-> new CartNotFoundException("Cart not found"));
+		return cartMapper.toCartResponse(cart);
+	}
+	
+	
 	//insert product to cart:
 	public CartResponseDto addProductToCart(Long cartId, Long productId, Integer quantity){
 		//verifies if quantity is greater than zero:
@@ -64,4 +78,15 @@ public class CartService {
 		//returning dto:
 		return cartMapper.toCartResponse(savedCart);
 	}
+	
+
+	
 }
+
+
+
+
+
+
+
+
