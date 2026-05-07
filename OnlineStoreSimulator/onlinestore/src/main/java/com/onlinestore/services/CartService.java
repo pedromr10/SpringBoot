@@ -3,11 +3,13 @@ package com.onlinestore.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.onlinestore.dtos.CartResponseDto;
 import com.onlinestore.entities.Cart;
 import com.onlinestore.entities.CartItem;
 import com.onlinestore.entities.Product;
 import com.onlinestore.exceptions.CartNotFoundException;
 import com.onlinestore.exceptions.ProductNotFoundException;
+import com.onlinestore.mappers.CartMapper;
 import com.onlinestore.repositories.CartRepository;
 import com.onlinestore.repositories.ProductRepository;
 
@@ -18,16 +20,18 @@ public class CartService {
 	private CartRepository cartRepo;
 	@Autowired
 	private ProductRepository productRepo;
+	@Autowired
+	private CartMapper cartMapper;
 	
 	//insert product to cart:
-	public Cart addProductToCart(Long cartId, Long productId, Integer quantity){
+	public CartResponseDto addProductToCart(Long cartId, Long productId, Integer quantity){
 		//verifies if quantity is greater than zero:
 		if (quantity <= 0) {
 		    throw new RuntimeException("Quantity must be greater than zero");
 		}
 		Cart cart = cartRepo.findById(cartId).orElseThrow(()-> new CartNotFoundException("Cart not found"));
 		Product product = productRepo.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
-		
+		//verify if product already exists in cart:
 		CartItem existingItem = null;
 		for(CartItem item: cart.getCartItems()) {
 			if(item.getProduct().getId().equals(productId)) {
@@ -55,6 +59,9 @@ public class CartService {
 
 	        cart.getCartItems().add(newItem);
 		}
-		return cartRepo.save(cart);
+		//saving the cart:
+		Cart savedCart = cartRepo.save(cart);
+		//returning dto:
+		return cartMapper.toCartResponse(savedCart);
 	}
 }
