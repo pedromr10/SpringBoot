@@ -12,6 +12,7 @@ import com.onlinestore.entities.CartItem;
 import com.onlinestore.entities.Order;
 import com.onlinestore.entities.OrderItem;
 import com.onlinestore.enums.OrderStatus;
+import com.onlinestore.exceptions.CartEmptyException;
 import com.onlinestore.exceptions.CartNotFoundException;
 import com.onlinestore.exceptions.InsufficientStockException;
 import com.onlinestore.mappers.OrderMapper;
@@ -37,7 +38,7 @@ public class CheckoutService {
 		Cart cart = cartRepo.findById(cartId).orElseThrow(()-> new CartNotFoundException("Cart not found"));
 		//cart empty validation:
 		if(cart.getCartItems().isEmpty()) {
-		    throw new RuntimeException("Cart is empty"); //**********
+		    throw new CartEmptyException("Cart is empty");
 		}
 		//creates an order:
 		Order order = new Order();

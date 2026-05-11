@@ -112,5 +112,15 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
 	
+	//order not found:
+	@ExceptionHandler(OrderNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handlerOrderNotFound(OrderNotFoundException e, HttpServletRequest request){
+		ErrorResponse error = new ErrorResponse();
+		error.setTimestamp(LocalDateTime.now());
+		error.setStatus(HttpStatus.NOT_FOUND.value());
+		error.setPath(request.getRequestURI());
+		error.setMessages(List.of(e.getMessage()));
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
 	
 }
