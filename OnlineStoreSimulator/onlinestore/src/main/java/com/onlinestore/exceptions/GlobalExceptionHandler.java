@@ -79,7 +79,27 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
 	}
 	
-	
+	//cart item not found:
+	@ExceptionHandler(CartItemNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handlerCartItemNotFound(CartItemNotFoundException e, HttpServletRequest request){
+		ErrorResponse error = new ErrorResponse();
+		error.setTimestamp(LocalDateTime.now());
+		error.setStatus(HttpStatus.NOT_FOUND.value());
+		error.setPath(request.getRequestURI());
+		error.setMessages(List.of(e.getMessage()));
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+
+	//insufficient stock:
+	@ExceptionHandler(InsufficientStockException.class)
+	public ResponseEntity<ErrorResponse> handlerInsufficientStock(InsufficientStockException e, HttpServletRequest request){
+		ErrorResponse error = new ErrorResponse();
+		error.setTimestamp(LocalDateTime.now());
+		error.setStatus(HttpStatus.CONFLICT.value());
+		error.setPath(request.getRequestURI());
+		error.setMessages(List.of(e.getMessage()));
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+	}
 	
 	
 	

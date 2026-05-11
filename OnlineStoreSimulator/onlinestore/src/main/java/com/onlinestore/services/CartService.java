@@ -8,7 +8,9 @@ import com.onlinestore.dtos.CartResponseDto;
 import com.onlinestore.entities.Cart;
 import com.onlinestore.entities.CartItem;
 import com.onlinestore.entities.Product;
+import com.onlinestore.exceptions.CartItemNotFoundException;
 import com.onlinestore.exceptions.CartNotFoundException;
+import com.onlinestore.exceptions.InsufficientStockException;
 import com.onlinestore.exceptions.ProductNotFoundException;
 import com.onlinestore.mappers.CartMapper;
 import com.onlinestore.repositories.CartRepository;
@@ -57,7 +59,7 @@ public class CartService {
 		if(existingItem != null) {
 			//verifies if it has stock:
 			if(product.getStock() < request.getQuantity() + existingItem.getQuantity()) {
-				throw new RuntimeException("Insufficient stock");
+				throw new InsufficientStockException("Insufficient stock");
 			}
 			existingItem.setQuantity(request.getQuantity() + existingItem.getQuantity());
 			
@@ -65,7 +67,7 @@ public class CartService {
 		else {
 			//verifies if it has stock:
 			if(product.getStock() < request.getQuantity()) {
-				throw new RuntimeException("Insufficient stock");
+				throw new InsufficientStockException("Insufficient stock");
 			}
 	        CartItem newItem = new CartItem();
 	        newItem.setProduct(product);
@@ -91,7 +93,7 @@ public class CartService {
 			}
 		}
 		if(cartItem == null) {
-			throw new RuntimeException("Cart item not found");
+			throw new CartItemNotFoundException("Cart item not found");
 		}
 		cart.getCartItems().remove(cartItem);
 		Cart savedCart = cartRepo.save(cart);
