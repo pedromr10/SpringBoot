@@ -30,6 +30,6 @@ public class OrderResponseDto {
 	@Schema(description = "Order status", example = "PENDING")
 	private OrderStatus status;
 	@Schema(description = "List of order items")
-	private List<OrderItem> items = new ArrayList<>();
+	private List<OrderItemResponseDto> items = new ArrayList<>();
 	
 }

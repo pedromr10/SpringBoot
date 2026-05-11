@@ -101,7 +101,16 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
 	}
 	
-	
+	//cart empty:
+	@ExceptionHandler(CartEmptyException.class)
+	public ResponseEntity<ErrorResponse> handlerCarEmpty(CartEmptyException e, HttpServletRequest request){
+		ErrorResponse error = new ErrorResponse();
+		error.setTimestamp(LocalDateTime.now());
+		error.setStatus(HttpStatus.BAD_REQUEST.value());
+		error.setPath(request.getRequestURI());
+		error.setMessages(List.of(e.getMessage()));
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+	}
 	
 	
 }
