@@ -1,5 +1,6 @@
 package com.onlinestore.dtos;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,6 +20,8 @@ public class CartResponseDto {
 	private Long id;
 	@Schema(description = "List of cart items", example = "[{ \\\"productId\\\": 1, \\\"productName\\\": \\\"Mouse\\\", \\\"price\\\": 100, \\\"quantity\\\": 2 }]")
 	private List<CartItemResponseDto> items;
+	private BigDecimal totalPrice;
+	
 }
 
 

@@ -1,5 +1,7 @@
 package com.onlinestore.mappers;
 
+import java.math.BigDecimal;
+
 import org.springframework.stereotype.Component;
 
 import com.onlinestore.dtos.CartItemResponseDto;
@@ -16,6 +18,7 @@ public class CartMapper {
 		CartResponseDto response = new CartResponseDto();
 		response.setId(cart.getId());
 		response.setItems(cart.getCartItems().stream().map(this::toCartItemResponse).toList());
+		response.setTotalPrice(cart.getCartItems().stream().map(item->item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))).reduce(BigDecimal.ZERO, BigDecimal::add));
 		return response;
 	}
 	
