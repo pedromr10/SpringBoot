@@ -14,7 +14,7 @@ import com.onlinestore.dtos.OrderResponseDto;
 import com.onlinestore.services.OrderService;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/api/v1/orders")
 public class OrderController {
 	
 	@Autowired

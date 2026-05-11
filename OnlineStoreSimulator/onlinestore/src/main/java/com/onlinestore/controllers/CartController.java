@@ -18,7 +18,7 @@ import com.onlinestore.services.CartService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/carts")
+@RequestMapping("/api/v1/carts")
 public class CartController {
 	
 	@Autowired
@@ -47,7 +47,7 @@ public class CartController {
 	
 	//delete item from cart:
 	@DeleteMapping("/{cartId}/items/{itemId}")
-	public ResponseEntity<CartResponseDto> deleteItem(@PathVariable Long itemId, @PathVariable Long cartId){
+	public ResponseEntity<CartResponseDto> deleteItem(@PathVariable Long cartId, @PathVariable Long itemId){
 		CartResponseDto response = cartService.deleteItem(cartId, itemId);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}

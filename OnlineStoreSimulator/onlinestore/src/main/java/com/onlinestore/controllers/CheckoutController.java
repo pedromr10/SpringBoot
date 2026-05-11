@@ -12,7 +12,7 @@ import com.onlinestore.dtos.OrderResponseDto;
 import com.onlinestore.services.CheckoutService;
 
 @RestController
-@RequestMapping("/carts")
+@RequestMapping("/api/v1/carts")
 public class CheckoutController {
 	
     @Autowired
