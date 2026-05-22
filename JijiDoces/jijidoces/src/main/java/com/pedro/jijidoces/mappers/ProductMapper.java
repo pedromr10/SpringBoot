@@ -11,6 +11,6 @@ public class ProductMapper {
 	}
 	
 	public static ProductResponseDTO toResponse(Product product) {
-		return ProductResponseDTO.builder().flavour(product.getFlavour()).weight(product.getWeight()).price(product.getPrice()).productType(product.getProductType()).productStyle(product.getProductStyle()).build();
+		return ProductResponseDTO.builder().id(product.getId()).flavour(product.getFlavour()).weight(product.getWeight()).price(product.getPrice()).productType(product.getProductType()).productStyle(product.getProductStyle()).build();
 	}
 }
