@@ -43,7 +43,6 @@ public class ProductService {
 	}
 	
 	//update product:
-	// update product:
 	public ProductResponseDTO updateProduct(Long id, ProductRequestDTO request) {
 	    Product product = productRepo.findById(id)
 	            .orElseThrow(() -> new RuntimeException("Produto nao encontrado"));
