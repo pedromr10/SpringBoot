@@ -1,9 +1,9 @@
 package com.pedro.jijidoces.entities;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
-import com.pedro.jijidoces.enums.ProductStyle;
-import com.pedro.jijidoces.enums.ProductType;
+import com.pedro.jijidoces.enums.OrderStatus;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,16 +25,15 @@ import lombok.Setter;
 @Builder
 
 @Entity
-@Table(name = "tb_product")
-public class Product {
+@Table(name = "tb_order")
+public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String flavour;
-	private BigDecimal weight;
-	private BigDecimal price;
-    @Enumerated(EnumType.STRING)
-    private ProductType productType;
-    @Enumerated(EnumType.STRING)
-    private ProductStyle productStyle;
+	private String clientName;
+	private LocalDateTime deliveryDate;
+	private LocalDateTime createdAt;
+	@Enumerated(EnumType.STRING)
+	private OrderStatus status;
+	private BigDecimal totalPrice;
 }
