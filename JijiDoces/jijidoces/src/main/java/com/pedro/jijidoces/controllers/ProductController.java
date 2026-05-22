@@ -20,7 +20,7 @@ import com.pedro.jijidoces.services.ProductService;
 
 import jakarta.validation.Valid;
 
-@RequestMapping("/products")
+@RequestMapping("/api/v1/products")
 @RestController
 public class ProductController {
 	@Autowired
