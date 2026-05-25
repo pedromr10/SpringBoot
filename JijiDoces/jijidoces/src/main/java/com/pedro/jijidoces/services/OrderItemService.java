@@ -30,9 +30,9 @@ public class OrderItemService {
 	// add item to order:
 	public OrderItemResponseDTO addItemToOrder(Long orderId, OrderItemRequestDTO request) {
 
-	    Order order = orderRepo.findById(request.getOrderId())
+	    Order order = orderRepo.findById(orderId)
 	            .orElseThrow(() -> new OrderItemNotFoundException("Pedido nao encontrado"));
-	    Product product = productRepo.findById(orderId)
+	    Product product = productRepo.findById(request.getProductId())
 	            .orElseThrow(() -> new ProductNotFoundException("Produto nao encontrado"));
 	    OrderItem orderItem = OrderItemMapper.toEntity(request, order, product);
 	    OrderItem savedItem = oiRepo.save(orderItem);

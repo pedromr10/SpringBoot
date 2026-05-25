@@ -7,8 +7,6 @@ import lombok.Getter;
 
 public class OrderItemRequestDTO {
     @NotNull
-    private Long orderId;
-    @NotNull
     private Long productId;
     @NotNull
     private Integer quantity;

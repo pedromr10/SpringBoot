@@ -1,6 +1,7 @@
 package com.pedro.jijidoces.dtos.orderItem;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import lombok.Builder;
 import lombok.Getter;
