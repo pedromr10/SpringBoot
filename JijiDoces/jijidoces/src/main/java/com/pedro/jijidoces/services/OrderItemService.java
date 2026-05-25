@@ -10,6 +10,8 @@ import com.pedro.jijidoces.dtos.orderItem.OrderItemResponseDTO;
 import com.pedro.jijidoces.entities.Order;
 import com.pedro.jijidoces.entities.OrderItem;
 import com.pedro.jijidoces.entities.Product;
+import com.pedro.jijidoces.exceptions.OrderItemNotFoundException;
+import com.pedro.jijidoces.exceptions.ProductNotFoundException;
 import com.pedro.jijidoces.mappers.OrderItemMapper;
 import com.pedro.jijidoces.repositories.OrderItemRepository;
 import com.pedro.jijidoces.repositories.OrderRepository;
@@ -29,9 +31,9 @@ public class OrderItemService {
 	public OrderItemResponseDTO addItemToOrder(Long orderId, OrderItemRequestDTO request) {
 
 	    Order order = orderRepo.findById(request.getOrderId())
-	            .orElseThrow(() -> new RuntimeException("Pedido nao encontrado"));
+	            .orElseThrow(() -> new OrderItemNotFoundException("Pedido nao encontrado"));
 	    Product product = productRepo.findById(orderId)
-	            .orElseThrow(() -> new RuntimeException("Produto nao encontrado"));
+	            .orElseThrow(() -> new ProductNotFoundException("Produto nao encontrado"));
 	    OrderItem orderItem = OrderItemMapper.toEntity(request, order, product);
 	    OrderItem savedItem = oiRepo.save(orderItem);
 	    order.setTotalPrice(
@@ -44,7 +46,7 @@ public class OrderItemService {
 	// find items from orderid:
 	public List<OrderItemResponseDTO> getItemsByOrderId(Long orderId){
 	    Order order = orderRepo.findById(orderId)
-	            .orElseThrow(() -> new RuntimeException("Pedido nao encontrado"));
+	            .orElseThrow(() -> new OrderItemNotFoundException("Pedido nao encontrado"));
 	    return order.getItems().stream().map(OrderItemMapper::toResponse).toList();
 	}
 	

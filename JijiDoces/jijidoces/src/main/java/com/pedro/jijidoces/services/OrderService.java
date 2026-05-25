@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.pedro.jijidoces.dtos.order.OrderRequestDTO;
 import com.pedro.jijidoces.dtos.order.OrderResponseDTO;
 import com.pedro.jijidoces.entities.Order;
+import com.pedro.jijidoces.exceptions.OrderNotFoundException;
 import com.pedro.jijidoces.mappers.OrderMapper;
 import com.pedro.jijidoces.repositories.OrderRepository;
 
@@ -26,7 +27,7 @@ public class OrderService {
 
 	// get order by id:
 	public OrderResponseDTO getOrderById(Long id) {
-		Order order = orderRepo.findById(id).orElseThrow(() -> new RuntimeException("Pedido nao encontrado"));
+		Order order = orderRepo.findById(id).orElseThrow(() -> new OrderNotFoundException("Pedido nao encontrado"));
 		return OrderMapper.toResponse(order);
 	}
 
@@ -38,13 +39,13 @@ public class OrderService {
 
 	// delete order:
 	public void deleteOrder(Long id) {
-		Order order = orderRepo.findById(id).orElseThrow(() -> new RuntimeException("Pedido nao encontrado"));
+		Order order = orderRepo.findById(id).orElseThrow(() -> new OrderNotFoundException("Pedido nao encontrado"));
 		orderRepo.delete(order);
 	}
 
 	// update order:
 	public OrderResponseDTO updateOrder(Long id, OrderRequestDTO request) {
-		Order order = orderRepo.findById(id).orElseThrow(() -> new RuntimeException("Pedido nao encontrado"));
+		Order order = orderRepo.findById(id).orElseThrow(() -> new OrderNotFoundException("Pedido nao encontrado"));
 		order.setClientName(request.getClientName());
 		order.setDeliveryDate(request.getDeliveryDate());
 		order.setStatus(request.getStatus());

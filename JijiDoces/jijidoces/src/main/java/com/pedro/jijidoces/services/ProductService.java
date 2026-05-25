@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.pedro.jijidoces.dtos.product.ProductRequestDTO;
 import com.pedro.jijidoces.dtos.product.ProductResponseDTO;
 import com.pedro.jijidoces.entities.Product;
+import com.pedro.jijidoces.exceptions.ProductNotFoundException;
 import com.pedro.jijidoces.mappers.ProductMapper;
 import com.pedro.jijidoces.repositories.ProductRepository;
 
@@ -26,7 +27,7 @@ public class ProductService {
 	
 	//get product by id:
 	public ProductResponseDTO getProductById(Long id) {
-		Product product = productRepo.findById(id).orElseThrow(() -> new RuntimeException("Produto nao encontrado"));
+		Product product = productRepo.findById(id).orElseThrow(() -> new ProductNotFoundException("Produto nao encontrado"));
 		return ProductMapper.toResponse(product);
 	}
 	
@@ -38,14 +39,14 @@ public class ProductService {
 	
 	//delete product:
 	public void deleteProduct(Long id) {
-	    Product product = productRepo.findById(id).orElseThrow(() -> new RuntimeException("Produto nao encontrado"));
+	    Product product = productRepo.findById(id).orElseThrow(() -> new ProductNotFoundException("Produto nao encontrado"));
 	    productRepo.delete(product);
 	}
 	
 	//update product:
 	public ProductResponseDTO updateProduct(Long id, ProductRequestDTO request) {
 	    Product product = productRepo.findById(id)
-	            .orElseThrow(() -> new RuntimeException("Produto nao encontrado"));
+	            .orElseThrow(() -> new ProductNotFoundException("Produto nao encontrado"));
 	    product.setFlavour(request.getFlavour());
 	    product.setWeight(request.getWeight());
 	    product.setPrice(request.getPrice());
