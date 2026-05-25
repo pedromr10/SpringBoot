@@ -26,11 +26,11 @@ public class OrderItemService {
 	private ProductRepository productRepo;
 	
 	// add item to order:
-	public OrderItemResponseDTO addItemToOrder(OrderItemRequestDTO request) {
+	public OrderItemResponseDTO addItemToOrder(Long orderId, OrderItemRequestDTO request) {
 
 	    Order order = orderRepo.findById(request.getOrderId())
 	            .orElseThrow(() -> new RuntimeException("Pedido nao encontrado"));
-	    Product product = productRepo.findById(request.getProductId())
+	    Product product = productRepo.findById(orderId)
 	            .orElseThrow(() -> new RuntimeException("Produto nao encontrado"));
 	    OrderItem orderItem = OrderItemMapper.toEntity(request, order, product);
 	    OrderItem savedItem = oiRepo.save(orderItem);
