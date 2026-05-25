@@ -2,6 +2,7 @@ package com.pedro.jijidoces.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.pedro.jijidoces.enums.OrderStatus;
 
@@ -11,6 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,4 +38,7 @@ public class Order {
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
 	private BigDecimal totalPrice;
+	
+	@OneToMany(mappedBy = "order")
+	private List<OrderItem> items;
 }
