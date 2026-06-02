@@ -18,8 +18,11 @@ import com.pedro.jijidoces.dtos.product.ProductRequestDTO;
 import com.pedro.jijidoces.dtos.product.ProductResponseDTO;
 import com.pedro.jijidoces.services.ProductService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Products")
 @RequestMapping("/api/v1/products")
 @RestController
 public class ProductController {
@@ -27,6 +30,7 @@ public class ProductController {
 	private ProductService productService;
 	
 	//add product:
+	@Operation(summary = "Create a new product")
 	@PostMapping
 	public ResponseEntity<ProductResponseDTO> addProduct(@RequestBody @Valid ProductRequestDTO request) {
 		ProductResponseDTO response = productService.addProduct(request);
@@ -34,6 +38,7 @@ public class ProductController {
 	}
 	
 	//get product by id:
+	@Operation(summary = "Get product by id")
 	@GetMapping("/{id}")
 	public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable Long id) {
 		ProductResponseDTO response = productService.getProductById(id);
@@ -41,6 +46,7 @@ public class ProductController {
 	}
 	
 	//get all products:
+	@Operation(summary = "Get all products")
 	@GetMapping
 	public ResponseEntity<List<ProductResponseDTO>> getAllProducts(){
 		List<ProductResponseDTO> list = productService.getAllProducts();
@@ -48,6 +54,7 @@ public class ProductController {
 	}
 	
 	//update product:
+	@Operation(summary = "Update product")
 	@PutMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Long id,@RequestBody @Valid ProductRequestDTO request) {
         ProductResponseDTO response = productService.updateProduct(id, request);
@@ -55,6 +62,7 @@ public class ProductController {
     }
 	
 	//delete product:
+	@Operation(summary = "Delete product")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);

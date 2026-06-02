@@ -18,8 +18,11 @@ import com.pedro.jijidoces.dtos.order.OrderRequestDTO;
 import com.pedro.jijidoces.dtos.order.OrderResponseDTO;
 import com.pedro.jijidoces.services.OrderService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Orders")
 @RestController
 @RequestMapping("/api/v1/orders")
 public class OrderController {
@@ -28,6 +31,7 @@ public class OrderController {
 	private OrderService orderService;
 	
 	//add order:
+	@Operation(summary = "Create a new order")
 	@PostMapping
 	public ResponseEntity<OrderResponseDTO> addOrder(@RequestBody @Valid OrderRequestDTO request){
 		OrderResponseDTO response = orderService.addOrder(request);
@@ -35,6 +39,7 @@ public class OrderController {
 	}
 	
 	//get order by id
+	@Operation(summary = "Get order by id")
 	@GetMapping("/{id}")
 	public ResponseEntity<OrderResponseDTO> getOrderById(@PathVariable Long id){
 		OrderResponseDTO response = orderService.getOrderById(id);
@@ -42,6 +47,7 @@ public class OrderController {
 	}
 	
 	//get all orders:
+	@Operation(summary = "Get all orders")
 	@GetMapping
 	public ResponseEntity<List<OrderResponseDTO>> getAllOrders(){
 		List<OrderResponseDTO> list = orderService.getAllOrders();
@@ -49,6 +55,7 @@ public class OrderController {
 	}
 	
 	//delete order:
+	@Operation(summary = "Delete order")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteOrder(@PathVariable Long id){
 		orderService.deleteOrder(id);
@@ -56,6 +63,7 @@ public class OrderController {
 	}
 	
 	//update order:
+	@Operation(summary = "Update order")
 	@PutMapping("/{id}")
 	public ResponseEntity<OrderResponseDTO> updateOrder(@PathVariable Long id, @RequestBody @Valid OrderRequestDTO request){
 		OrderResponseDTO response = orderService.updateOrder(id, request);

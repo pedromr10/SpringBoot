@@ -17,8 +17,11 @@ import com.pedro.jijidoces.dtos.orderItem.OrderItemRequestDTO;
 import com.pedro.jijidoces.dtos.orderItem.OrderItemResponseDTO;
 import com.pedro.jijidoces.services.OrderItemService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Order Items")
 @RestController
 @RequestMapping("/api/v1/orders/{orderId}/items")
 public class OrderItemController {
@@ -27,6 +30,7 @@ public class OrderItemController {
 	private OrderItemService oiService;
 	
 	// add item to order:
+	@Operation(summary = "Add item to order")
 	@PostMapping
 	public ResponseEntity<OrderItemResponseDTO> addItemToOrder(@PathVariable Long orderId, @RequestBody @Valid OrderItemRequestDTO request){
 		OrderItemResponseDTO response = oiService.addItemToOrder(orderId, request);
@@ -34,6 +38,7 @@ public class OrderItemController {
 	}
 	
 	// find items from orderid:
+	@Operation(summary = "Get all items from an order")
 	@GetMapping
 	public ResponseEntity<List<OrderItemResponseDTO>> getItemsByOrderId(@PathVariable Long orderId){
 		List<OrderItemResponseDTO> response = oiService.getItemsByOrderId(orderId);
@@ -41,6 +46,7 @@ public class OrderItemController {
 	}
 	
 	// delete items:
+	@Operation(summary = "Delete item from order")
 	@DeleteMapping("/{orderItemId}")
 	public ResponseEntity<Void> deleteItem(@PathVariable Long orderItemId){
 		oiService.deleteItem(orderItemId);
