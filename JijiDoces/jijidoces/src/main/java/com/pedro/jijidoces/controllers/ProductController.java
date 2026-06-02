@@ -19,6 +19,8 @@ import com.pedro.jijidoces.dtos.product.ProductResponseDTO;
 import com.pedro.jijidoces.services.ProductService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -31,6 +33,10 @@ public class ProductController {
 	
 	//add product:
 	@Operation(summary = "Create a new product")
+	@ApiResponses({
+	    @ApiResponse(responseCode = "201", description = "Product created successfully"),
+	    @ApiResponse(responseCode = "400", description = "Invalid request")
+	})
 	@PostMapping
 	public ResponseEntity<ProductResponseDTO> addProduct(@RequestBody @Valid ProductRequestDTO request) {
 		ProductResponseDTO response = productService.addProduct(request);
@@ -39,6 +45,10 @@ public class ProductController {
 	
 	//get product by id:
 	@Operation(summary = "Get product by id")
+	@ApiResponses({
+	    @ApiResponse(responseCode = "200", description = "Product found"),
+	    @ApiResponse(responseCode = "404", description = "Product not found")
+	})
 	@GetMapping("/{id}")
 	public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable Long id) {
 		ProductResponseDTO response = productService.getProductById(id);
@@ -47,6 +57,9 @@ public class ProductController {
 	
 	//get all products:
 	@Operation(summary = "Get all products")
+	@ApiResponses({
+	    @ApiResponse(responseCode = "200", description = "Products retrieved successfully")
+	})
 	@GetMapping
 	public ResponseEntity<List<ProductResponseDTO>> getAllProducts(){
 		List<ProductResponseDTO> list = productService.getAllProducts();
@@ -55,6 +68,10 @@ public class ProductController {
 	
 	//update product:
 	@Operation(summary = "Update product")
+	@ApiResponses({
+	    @ApiResponse(responseCode = "200", description = "Product updated successfully"),
+	    @ApiResponse(responseCode = "404", description = "Product not found")
+	})
 	@PutMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Long id,@RequestBody @Valid ProductRequestDTO request) {
         ProductResponseDTO response = productService.updateProduct(id, request);
@@ -63,6 +80,10 @@ public class ProductController {
 	
 	//delete product:
 	@Operation(summary = "Delete product")
+	@ApiResponses({
+	    @ApiResponse(responseCode = "204", description = "Product deleted successfully"),
+	    @ApiResponse(responseCode = "404", description = "Product not found")
+	})
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);

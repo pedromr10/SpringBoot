@@ -18,6 +18,8 @@ import com.pedro.jijidoces.dtos.orderItem.OrderItemResponseDTO;
 import com.pedro.jijidoces.services.OrderItemService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -31,6 +33,10 @@ public class OrderItemController {
 	
 	// add item to order:
 	@Operation(summary = "Add item to order")
+	@ApiResponses({
+	    @ApiResponse(responseCode = "201", description = "Item added successfully"),
+	    @ApiResponse(responseCode = "404", description = "Order or product not found")
+	})
 	@PostMapping
 	public ResponseEntity<OrderItemResponseDTO> addItemToOrder(@PathVariable Long orderId, @RequestBody @Valid OrderItemRequestDTO request){
 		OrderItemResponseDTO response = oiService.addItemToOrder(orderId, request);
@@ -39,6 +45,9 @@ public class OrderItemController {
 	
 	// find items from orderid:
 	@Operation(summary = "Get all items from an order")
+	@ApiResponses({
+	    @ApiResponse(responseCode = "200", description = "Items retrieved successfully")
+	})
 	@GetMapping
 	public ResponseEntity<List<OrderItemResponseDTO>> getItemsByOrderId(@PathVariable Long orderId){
 		List<OrderItemResponseDTO> response = oiService.getItemsByOrderId(orderId);
@@ -47,6 +56,10 @@ public class OrderItemController {
 	
 	// delete items:
 	@Operation(summary = "Delete item from order")
+	@ApiResponses({
+	    @ApiResponse(responseCode = "204", description = "Item deleted successfully"),
+	    @ApiResponse(responseCode = "404", description = "Item not found")
+	})
 	@DeleteMapping("/{orderItemId}")
 	public ResponseEntity<Void> deleteItem(@PathVariable Long orderItemId){
 		oiService.deleteItem(orderItemId);
