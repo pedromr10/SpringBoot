@@ -1,0 +1,8 @@
+Java:
+
+
+Spring Boot dependencies:
+
+
+Database:
+- PostgreSQL 17
