@@ -32,4 +32,47 @@ public class UserService {
 	public List<UserResponseDTO> getAllUsers(){
 		return userRepo.findAll().stream().map(userMapper::toResponse).toList();
 	}
+	
+	
+	//get user by id:
+	public UserResponseDTO getUserById(Long id){
+		User user = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+		
+		return userMapper.toResponse(user);
+	}
+	
+	//update user:
+	public UserResponseDTO updateUser(Long id, UserRequestDTO request) {
+		User user = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+		user.setName(request.getName());
+		user.setEmail(request.getEmail());
+		user.setPassword(request.getPassword());
+		User updatedUser = userRepo.save(user);
+		
+		return userMapper.toResponse(updatedUser);
+	}
+	
+	//delete user:
+	public void deleteUser(Long id) {
+		User user = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+		userRepo.delete(user);
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
