@@ -1,5 +1,7 @@
 package com.pedro.financeapi.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +26,10 @@ public class UserService {
 		
 		User savedUser = userRepo.save(user);
 		return userMapper.toResponse(savedUser);
+	}
+	
+	//get all users:
+	public List<UserResponseDTO> getAllUsers(){
+		return userRepo.findAll().stream().map(userMapper::toResponse).toList();
 	}
 }
