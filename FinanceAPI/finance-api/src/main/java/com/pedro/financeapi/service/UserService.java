@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.pedro.financeapi.dto.user.UserRequestDTO;
 import com.pedro.financeapi.dto.user.UserResponseDTO;
 import com.pedro.financeapi.entity.User;
+import com.pedro.financeapi.exception.UserNotFoundException;
 import com.pedro.financeapi.mapper.UserMapper;
 import com.pedro.financeapi.repository.UserRepository;
 
@@ -36,14 +37,14 @@ public class UserService {
 	
 	//get user by id:
 	public UserResponseDTO getUserById(Long id){
-		User user = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+		User user = userRepo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 		
 		return userMapper.toResponse(user);
 	}
 	
 	//update user:
 	public UserResponseDTO updateUser(Long id, UserRequestDTO request) {
-		User user = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+		User user = userRepo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 		user.setName(request.getName());
 		user.setEmail(request.getEmail());
 		user.setPassword(request.getPassword());
@@ -54,7 +55,7 @@ public class UserService {
 	
 	//delete user:
 	public void deleteUser(Long id) {
-		User user = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+		User user = userRepo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 		userRepo.delete(user);
 	}
 	
