@@ -1,5 +1,7 @@
 package com.pedro.financeapi.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,4 +37,25 @@ public class TransactionService {
 		
 	}
 	
+	//get all transactions:
+	public List<TransactionResponseDTO> getAllTransactions(){
+		return transactionRepo.findAll().stream().map(mapper::toResponse).toList();
+	}
+	
+	//get transaction by id:
+	public TransactionResponseDTO getTransactionById(Long id) {
+		Transaction transaction = transactionRepo.findById(id).orElseThrow(()-> newTransactionNotFoundException(id));
+		
+		return mapper.toResponse(transaction);
+	}
+
+	
+	
+	
+	
 }
+
+
+
+
+
