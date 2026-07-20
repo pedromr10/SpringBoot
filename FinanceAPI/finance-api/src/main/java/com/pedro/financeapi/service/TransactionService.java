@@ -1,14 +1,17 @@
 package com.pedro.financeapi.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pedro.financeapi.dto.balance.BalanceResponseDTO;
 import com.pedro.financeapi.dto.transaction.TransactionRequestDTO;
 import com.pedro.financeapi.dto.transaction.TransactionResponseDTO;
 import com.pedro.financeapi.entity.Transaction;
 import com.pedro.financeapi.entity.User;
+import com.pedro.financeapi.enums.TransactionType;
 import com.pedro.financeapi.exception.TransactionNotFoundException;
 import com.pedro.financeapi.exception.UserNotFoundException;
 import com.pedro.financeapi.mapper.TransactionMapper;
@@ -77,6 +80,29 @@ public class TransactionService {
 	public List<TransactionResponseDTO> getTransactionsByUserId(Long userId){
 		User user = userRepo.findById(userId).orElseThrow(()-> new UserNotFoundException(userId));
 		return transactionRepo.findByUserId(userId).stream().map(transactionMapper::toResponse).toList();
+	}
+	
+	//get user balance by id:
+	public BalanceResponseDTO getUserBalanceById(Long userId) {
+		User user = userRepo.findById(userId).orElseThrow(()-> new UserNotFoundException(userId));
+		
+		List<Transaction> transactions = transactionRepo.findByUserId(userId);
+		
+		BigDecimal balance = BigDecimal.ZERO;
+		for(Transaction transaction : transactions) {
+			if(transaction.getType() == TransactionType.EXPENSE) {
+				balance = balance.subtract(transaction.getAmount());
+			}
+			else if(transaction.getType() == TransactionType.INCOME) {
+				balance = balance.add(transaction.getAmount());
+			}
+		}
+		
+		BalanceResponseDTO response = new BalanceResponseDTO();
+		response.setBalance(balance);
+		response.setUserId(userId);
+		
+		return response;
 	}
 	
 }
