@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pedro.financeapi.dto.transaction.TransactionResponseDTO;
 import com.pedro.financeapi.dto.user.UserRequestDTO;
 import com.pedro.financeapi.dto.user.UserResponseDTO;
+import com.pedro.financeapi.service.TransactionService;
 import com.pedro.financeapi.service.UserService;
 
 import jakarta.validation.Valid;
@@ -26,6 +28,9 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private TransactionService transactionService;
 	
 	//create user:
 	@PostMapping
@@ -61,6 +66,17 @@ public class UserController {
 	public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
 		userService.deleteUser(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+	
+	//get transactions by user id:
+	@GetMapping("/{userId}/transactions")
+	public ResponseEntity<List<TransactionResponseDTO>> getUserTransactions(
+	        @PathVariable Long userId) {
+
+	    List<TransactionResponseDTO> response =
+	            transactionService.getTransactionsByUserId(userId);
+
+	    return ResponseEntity.ok(response);
 	}
 }
 

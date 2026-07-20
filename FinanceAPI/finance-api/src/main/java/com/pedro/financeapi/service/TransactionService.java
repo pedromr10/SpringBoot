@@ -73,6 +73,12 @@ public class TransactionService {
 		transactionRepo.delete(transaction);
 	}
 	
+	//get transactions by user id:
+	public List<TransactionResponseDTO> getTransactionsByUserId(Long userId){
+		User user = userRepo.findById(userId).orElseThrow(()-> new UserNotFoundException(userId));
+		return transactionRepo.findByUserId(userId).stream().map(transactionMapper::toResponse).toList();
+	}
+	
 }
 
 
