@@ -47,8 +47,8 @@ public class TransactionController {
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 	
-	//update user:
-	@PutMapping("{id}")
+	//update transaction:
+	@PutMapping("/{id}")
 	public ResponseEntity<TransactionResponseDTO> updateTransaction(@PathVariable Long id, @Valid @RequestBody TransactionRequestDTO request){
 		TransactionResponseDTO response = transactionService.updateTransaction(id, request);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
